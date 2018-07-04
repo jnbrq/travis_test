@@ -1,0 +1,39 @@
+dist: trusty
+sudo: required
+language:
+    - cpp
+compiler:
+    - gcc
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - gcc-8
+            - g++-8
+before_script:
+    # first, download and install CMake
+    - export CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.4-Linux-x86_64.sh"
+    - wget "$CMAKE_URL"
+    - sh cmake-* --prefix=/usr/local --exclude-subdir
+    - cmake --version
+    
+    # now, assign correct links of gcc and g++ and set env
+    - ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
+    - ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
+    - export CC=/usr/bin/gcc-8
+    - export CXX=/usr/bin/g++-8
+    
+    # check the version
+    - g++ -v &&  gcc -v
+    
+    # now, start build
+    - mkdir build
+    - cd build
+    - cmake ..
+
+script:
+    - make
+    - ./travis_test
+
+
