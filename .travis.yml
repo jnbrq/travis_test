@@ -16,15 +16,8 @@ before_script:
     - export CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.4-Linux-x86_64.sh"
     - wget "$CMAKE_URL"
     - sudo sh cmake-* --prefix=/usr/local --exclude-subdir
+    
     - cmake --version
-    
-    # now, assign correct links of gcc and g++ and set env
-    - sudo ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
-    - sudo ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
-    - export CC=/usr/bin/gcc-8
-    - export CXX=/usr/bin/g++-8
-    
-    # check the version
     - g++ -v &&  gcc -v
     
     # now, start build
