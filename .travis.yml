@@ -16,15 +16,17 @@ before_script:
     - export CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.4-Linux-x86_64.sh"
     - wget "$CMAKE_URL"
     - sudo sh cmake-* --prefix=/usr/local --exclude-subdir
-    
+    - export PATH="/usr/local/bin:$PATH"
     - cmake --version
-    - g++ -v &&  gcc -v
+    
+    - export CC=gcc-8
+    - export CXX=g++-8
     
     # now, start build
     - mkdir build
     - cd build
     - cmake ..
-
+    
 script:
     - make
     - ./travis_test
