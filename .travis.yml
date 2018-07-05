@@ -42,8 +42,9 @@ before_script:
       tar xf boost*.tar.bz2 ;
       cd boost* ;
       ./bootstrap.sh ;
-      ${BOOST_BUILD_CMD} ;
-      sudo ${BOOST_BUILD_CMD} install ;
+      ${BOOST_BUILD_CMD} > boost_build_log.txt;
+      sudo ${BOOST_BUILD_CMD} install > boost_install_log.txt;
+      cd .. ; # up one directory
     
     # configure
     - mkdir build ;
