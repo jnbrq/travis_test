@@ -26,11 +26,7 @@ before_script:
     # now, let's download and install Boost, only specific libraries,
     # of course
     - export BOOST_URL="https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2" ;
-      wget "${BOOST_URL}" ;
-      tar xf boost*.tar.bz2 ;
-      cd boost* ;
-      ./bootstrap.sh ;
-      ./b2 --build-dir=/tmp/build-boost 
+      export BOOST_BUILD_CMD="./b2 --build-dir=/tmp/build-boost 
             toolset=gcc-8
             variant=release
             link=shared
@@ -41,8 +37,13 @@ before_script:
             --with-filesystem
             --with-test
             --with-locale
-            --with-iostreams
-            install
+            --with-iostreams" ;
+      wget "${BOOST_URL}" ;
+      tar xf boost*.tar.bz2 ;
+      cd boost* ;
+      ./bootstrap.sh ;
+      ${BOOST_BUILD_CMD} ;
+      sudo ${BOOST_BUILD_CMD} install ;
     
     # configure
     - mkdir build ;
