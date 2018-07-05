@@ -13,21 +13,43 @@ addons:
             - g++-8
 before_script:
     # first, download and install CMake
-    - export CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.4-Linux-x86_64.sh"
-    - wget "$CMAKE_URL"
-    - sudo sh cmake-* --prefix=/usr/local --exclude-subdir
-    - export PATH="/usr/local/bin:$PATH"
-    - cmake --version
+    - export CMAKE_URL="https://cmake.org/files/v3.11/cmake-3.11.4-Linux-x86_64.sh" ;
+      wget "$CMAKE_URL" ;
+      sudo sh cmake-* --prefix=/usr/local --exclude-subdir ;
+      export PATH="/usr/local/bin:$PATH" ;
+      cmake --version ;
     
-    - export CC=gcc-8
-    - export CXX=g++-8
+    # set env for CC and CXX
+    - export CC=gcc-8 ;
+      export CXX=g++-8 ;
     
-    # now, start build
-    - mkdir build
-    - cd build
-    - cmake ..
+    # now, let's download and install Boost, only specific libraries,
+    # of course
+    - export BOOST_URL="https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2" ;
+      wget "${BOOST_URL}" ;
+      tar xf boost*.tar.bz2 ;
+      ./bootstrap.sh ;
+      ./b2 --build-dir=/tmp/build-boost 
+            toolset=gcc-8
+            variant=release
+            link=shared
+            threading=multi
+            runtime-link=shared
+            --with-program_options
+            --with-system
+            --with-filesystem
+            --with-test
+            --with-locale
+            --with-iostreams
+            install
+    
+    # configure
+    - mkdir build ;
+      cd build ;
+      cmake .. ;
     
 script:
+    # build
     - make
     - ./travis_test
 
